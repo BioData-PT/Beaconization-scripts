@@ -105,7 +105,8 @@ def parsePackage(bffSheets:BFFSheets, package) -> int:
             "sex.label": [sexLabel],
             "sex.id": [sexId],
             "phenotypicFeatures_onset.age.iso8601duration": [getISO8601DurationFromAge(age)],
-            "phenotypicFeatures_onset": ["Age"], # adding column to select the type of age param
+            # TODO CHECK THAT THIS IS CORRECT
+            "phenotypicFeatures_onset": ["Age"], # adding column to select the type of age param 
         })
         
         bffSheets.individuals = pd.concat((bffSheets.individuals, individualsDf), ignore_index=True)

@@ -169,6 +169,6 @@ if True: # If True, export to an Excel file
         # Close the Pandas Excel writer and output the Excel file.
         writer.close()
         
-print("Sleeping 10 seconds before exiting...")
-time.sleep(10)
+#print("Sleeping 10 seconds before exiting...")
+#time.sleep(10)
 exit(0)
