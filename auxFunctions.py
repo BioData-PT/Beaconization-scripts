@@ -105,6 +105,7 @@ def parsePackage(bffSheets:BFFSheets, package) -> int:
             "sex.label": [sexLabel],
             "sex.id": [sexId],
             "phenotypicFeatures_onset.age.iso8601duration": [getISO8601DurationFromAge(age)],
+            "phenotypicFeatures_onset": ["Age"], # adding column to select the type of age param
         })
         
         bffSheets.individuals = pd.concat((bffSheets.individuals, individualsDf), ignore_index=True)
@@ -139,14 +140,14 @@ def mapTumorGrade2Ontology(gradeStr) -> tuple[str, str]:
     mapDict["not applicable"] = ("NCIT:C48660", "Not Applicable")
     mapDict["I"] = ("NCIT:C28077", "Grade 1")
     mapDict["II"] = ("NCIT:C28078", "Grade 2")
-    mapDict["IIA"] = ("", "Grade 2a")
-    mapDict["IIB"] = ("", "Grade 2b")
-    mapDict["IIC"] = ("", "Grade 2c")
+    mapDict["IIA"] = mapDict["II"] #("", "Grade 2a")
+    mapDict["IIB"] = mapDict["II"] #("", "Grade 2b")
+    mapDict["IIC"] = mapDict["II"] #("", "Grade 2c")
     mapDict["III"] = ("NCIT:C28079", "Grade 3")
     mapDict["IIIA"] = ("NCIT:C28076", "Grade 3a")
     mapDict["IIIB"] = ("NCIT:C28081", "Grade 3b")
     mapDict["IIIb"] = mapDict["IIIB"] # alias found in the XML
-    mapDict["IIIC"] = ("", "Grade 3c")
+    mapDict["IIIC"] = mapDict["III"]  #("", "Grade 3c")
     
     if gradeStr not in mapDict:
         print(f"Warning: Unknown library source: {gradeStr}. No library source ontology code will be defined.")
@@ -190,11 +191,13 @@ def getOntologyCodeFromLabelLibSource(labelLibSource:str) -> tuple[str,str]:
 def getOntologyCodeFromLabelSex(labelSex:str) -> tuple[str,str]:
     label = labelSex.strip().lower()
     ontoDict = {}
-    ontoDict['male'] = 'NCIT:C20197'
-    ontoDict['female'] = 'NCIT:C16576'
+    ontoDict['male'] = ('NCIT:C20197',"Male")
+    ontoDict['female'] = ('NCIT:C16576', "Female")
+    ontoDict['not collected'] = ("NCIT:C17998", "Unknown")
+    ontoDict['unknown'] = ontoDict['not collected']
     
     if label not in ontoDict:
         print(f"Warning: Unknown sex/gender: {label}. No sex/gender ontology code will be defined.")
         return ("", label)
     
-    return (ontoDict[label], label)
+    return (ontoDict[label][0], ontoDict[label][1])

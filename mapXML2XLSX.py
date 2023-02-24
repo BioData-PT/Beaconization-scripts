@@ -96,13 +96,7 @@ genderAvailableCount = bff.individuals['sex.id'].count()
 bff.cohorts['collectionEvents_eventGenders.availabilityCount'] = genderAvailableCount
 bff.cohorts['collectionEvents_eventGenders.availability'] = 'TRUE' if genderAvailableCount > 0 else 'FALSE'
 
-# change data type of date columns
-bff.runs = bff.runs.astype({'runDate':'datetime64[D]'})
-bff.analyses = bff.analyses.astype({'analysisDate':np.datetime64})
 
-# TODO agarrar nisto em string, tira
-# bff.runs.astype({'runDate':'datetime64[D]'})['runDate'][0]
-#
 
 # ---- Satic values (added manually for this dataset) ----
 if FILL_STATIC_VALUES:
@@ -148,6 +142,8 @@ if FILL_STATIC_VALUES:
 
     bff.individuals['diseases_diseaseCode.id'] = 'ICD10CM:C18.9'
     bff.individuals['diseases_diseaseCode.label'] = 'stage II/III colorectal cancer'
+    bff.individuals['phenotypicFeatures_featureType.id'] = 'HP:0003003'
+    bff.individuals['phenotypicFeatures_featureType.label'] = 'Colon cancer'
 
 
 
@@ -155,24 +151,6 @@ if True: # If True, export to an Excel file
     try:
         # Create a Pandas Excel writer using XlsxWriter as the engine.
         writer = pd.ExcelWriter(OUTPUT_PATH, engine='xlsxwriter')
-
-        # before exporting, format the date columns
-        #bff.runs['runDate'] = bff.runs['runDate'].dt.strftime('%Y-%m-%d')
-        #bff.analyses['analysisDate'] = bff.analyses['analysisDate'].dt.strftime('%Y-%m-%d')
-        SPLIT_DATE_STRING = "TTTTTTTTT" 
-        for dateIdx in range(len(bff.runs['runDate'])):
-            date = (bff.runs['runDate'][dateIdx])
-            #dateDayStr = str(datetime.datetime.strftime(date, f'%Y-%m-%d{SPLIT_DATE_STRING}%H:%M:%S')).split(SPLIT_DATE_STRING)[0]
-            dateDayStr = datetime.datetime.strptime(str(date), f'%Y-%m-%d')
-            dateDayDate = datetime.datetime.strptime(dateDayStr, '%Y-%m-%d').date()
-            bff.runs['runDate'][dateIdx] = dateDayDate
-  
-        """
-        idx = 0
-        for cell in bff.runs['runDate']:
-            bff.runs['runDate'][idx] = cell.strftime('%Y-%m-%d').date()
-            idx += 1
-        """
         
         # Write each dataframe to a different worksheet.
         bff.analyses.to_excel(writer, sheet_name='analyses', index=False)
