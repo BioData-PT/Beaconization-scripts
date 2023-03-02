@@ -96,7 +96,15 @@ genderAvailableCount = bff.individuals['sex.id'].count()
 bff.cohorts['collectionEvents_eventGenders.availabilityCount'] = genderAvailableCount
 bff.cohorts['collectionEvents_eventGenders.availability'] = 'TRUE' if genderAvailableCount > 0 else 'FALSE'
 
-
+# this function is called later so it doesn't drown the static values
+def addListOfIdsToDataset():
+    # get list of biosample ids
+    biosampleIds = bff.biosamples['id'].tolist()
+    bff.datasets['ids.biosampleIds'] = str(biosampleIds).replace("'", '"')
+    # get list of individual ids
+    individualIds = bff.individuals['id'].tolist()
+    bff.datasets['ids.individualIds'] = str(individualIds).replace("'", '"')
+    
 
 # ---- Satic values (added manually for this dataset) ----
 if FILL_STATIC_VALUES:
@@ -135,17 +143,25 @@ if FILL_STATIC_VALUES:
                     }\
     ]'.replace(' ', '') # remove spaces
     
+
+    
     bff.datasets['description'] = 'Gene expression and whole exome sequencing of 113 stage II/III colorectal cancer patients with poor outcome'
     bff.datasets['externalUrl'] = 'https://www.nature.com/articles/s41525-021-00177-w'
     bff.datasets['id'] = 'PRJNA689313'
     bff.datasets['name'] = 'Molecular subtyping of stage II/III colorectal cancer with poor outcome'
-
+    bff.datasets['info.origin'] = 'https://www.ncbi.nlm.nih.gov/bioproject/PRJNA689313'
+    bff.datasets['info.credits.variantCallingAnalysis'] = "Daniel Sobral"
+    bff.datasets['info.credits.studyAuthors'] = str(['Mahdi Golkaram', 'Michael L. Salmans', 'Shannon Kaplan', 'Raakhee Vijayaraghavan', 'Marta Martins', 'Nafeesa Khan', 'Cassandra Garbutt', 'Aaron Wise', 'Joyee Yao', 'Sandra Casimiro', 'Catarina Abreu', 'Daniela Macedo', 'Ana Lúcia Costa', 'Cecília Alvim', 'André Mansinho', 'Pedro Filipe', 'Pedro Marques da Costa', 'Afonso Fernandes', 'Paula Borralho', 'Cristina Ferreira', 'Fernando Aldeia', 'João Malaquias', 'Jim Godsey', 'Alex So', 'Traci Pawlowski', 'Luis Costa', 'Shile Zhang', 'Li Liu']).replace("'",'"')
+    bff.datasets['info.credits.study'] = 'https://www.nature.com/articles/s41525-021-00177-w'
+    bff.datasets['info.credits.biomaterialProvider'] = 'Luis Costa, Centro Hospitalar Universitário Lisboa Norte, Hospital de Santa Maria, Lisbon, Portugal'
+    
     bff.individuals['diseases_diseaseCode.id'] = 'ICD10CM:C18.9'
     bff.individuals['diseases_diseaseCode.label'] = 'stage II/III colorectal cancer'
     bff.individuals['phenotypicFeatures_featureType.id'] = 'HP:0003003'
     bff.individuals['phenotypicFeatures_featureType.label'] = 'Colon cancer'
 
-
+# call the function to add the lists of ids to the dataset table
+addListOfIdsToDataset() 
 
 if True: # If True, export to an Excel file
     try:
@@ -171,4 +187,6 @@ if True: # If True, export to an Excel file
         
 #print("Sleeping 10 seconds before exiting...")
 #time.sleep(10)
+print("* Finished OK! *")
+
 exit(0)

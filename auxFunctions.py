@@ -53,8 +53,11 @@ def parsePackage(bffSheets:BFFSheets, package) -> int:
     
     run = runSet[0]
     runId = run.find("IDENTIFIERS").find("PRIMARY_ID").text
+    
+    # ATENTION: We use this way to get biosampleId to match the VCF values presented in genomicVariations
     biosampleId = run.find("IDENTIFIERS").find("SUBMITTER_ID").text.split("_L")[0].replace("-","_")
-
+    #biosampleId = sample.attrib['alias']
+    
     runDate = -1
     for sraFile in run.find("SRAFiles").findall("SRAFile"):
         if sraFile.attrib['filename'] == runId:
@@ -87,8 +90,8 @@ def parsePackage(bffSheets:BFFSheets, package) -> int:
     biosamplesDf = pd.DataFrame({
       "id": [biosampleId],
       "individualId": [individualId],
-      "phenotypicFeatures_onset.age.iso8601duration": [getISO8601DurationFromAge(age)],
-      "measurements_observationMoment.age.iso8601duration": [getISO8601DurationFromAge(age)],
+      #"phenotypicFeatures_onset.age.iso8601duration": [getISO8601DurationFromAge(age)],
+      #"measurements_observationMoment.age.iso8601duration": [getISO8601DurationFromAge(age)],
       "tumorGrade.label": [mapTumorGrade2Ontology(stage)[1]],
       "tumorGrade.id": [mapTumorGrade2Ontology(stage)[0]],
     })
@@ -106,7 +109,7 @@ def parsePackage(bffSheets:BFFSheets, package) -> int:
             "sex.id": [sexId],
             "phenotypicFeatures_onset.age.iso8601duration": [getISO8601DurationFromAge(age)],
             # TODO CHECK THAT THIS IS CORRECT
-            "phenotypicFeatures_onset": ["Age"], # adding column to select the type of age param 
+            #"phenotypicFeatures_onset": ["Age"], # adding column to select the type of age param 
         })
         
         bffSheets.individuals = pd.concat((bffSheets.individuals, individualsDf), ignore_index=True)
