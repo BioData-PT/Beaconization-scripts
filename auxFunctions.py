@@ -107,7 +107,8 @@ def parsePackage(bffSheets:BFFSheets, package) -> int:
             "id": [individualId],
             "sex.label": [sexLabel],
             "sex.id": [sexId],
-            "phenotypicFeatures_onset.age.iso8601duration": [getISO8601DurationFromAge(age)],
+            # TODO FIND OUT HOW TO ENABLE THIS
+            #"phenotypicFeatures_onset.age.iso8601duration": [getISO8601DurationFromAge(age)],
             # TODO CHECK THAT THIS IS CORRECT
             #"phenotypicFeatures_onset": ["Age"], # adding column to select the type of age param 
         })
