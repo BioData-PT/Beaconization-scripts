@@ -120,8 +120,8 @@ if FILL_STATIC_VALUES:
 
 
     
-    bff.cohorts['id'] = 'stage_II/III_colorectal_cancer'
-    bff.cohorts['name'] = 'Stage II/III colorectal cancer'
+    bff.cohorts['id'] = 'stage_II_and_III_colorectal_cancer'
+    bff.cohorts['name'] = 'Stage II and III colorectal cancer'
 
     bff.cohorts['cohortType'] = 'study-defined'
         
@@ -145,20 +145,33 @@ if FILL_STATIC_VALUES:
     
 
     
-    bff.datasets['description'] = 'Gene expression and whole exome sequencing of 113 stage II/III colorectal cancer patients with poor outcome'
+    bff.datasets['description'] = 'Gene expression and whole exome sequencing of 114 stage II/III colorectal cancer patients with poor outcome'
     bff.datasets['externalUrl'] = 'https://www.nature.com/articles/s41525-021-00177-w'
     bff.datasets['id'] = 'PRJNA689313'
     bff.datasets['name'] = 'Molecular subtyping of stage II/III colorectal cancer with poor outcome'
+    
+    # credits on datasets tab
     bff.datasets['info.origin'] = 'https://www.ncbi.nlm.nih.gov/bioproject/PRJNA689313'
     bff.datasets['info.credits.variantCallingAnalysis'] = "Daniel Sobral"
     bff.datasets['info.credits.studyAuthors'] = str(['Mahdi Golkaram', 'Michael L. Salmans', 'Shannon Kaplan', 'Raakhee Vijayaraghavan', 'Marta Martins', 'Nafeesa Khan', 'Cassandra Garbutt', 'Aaron Wise', 'Joyee Yao', 'Sandra Casimiro', 'Catarina Abreu', 'Daniela Macedo', 'Ana Lúcia Costa', 'Cecília Alvim', 'André Mansinho', 'Pedro Filipe', 'Pedro Marques da Costa', 'Afonso Fernandes', 'Paula Borralho', 'Cristina Ferreira', 'Fernando Aldeia', 'João Malaquias', 'Jim Godsey', 'Alex So', 'Traci Pawlowski', 'Luis Costa', 'Shile Zhang', 'Li Liu']).replace("'",'"')
     bff.datasets['info.credits.study'] = 'https://www.nature.com/articles/s41525-021-00177-w'
     bff.datasets['info.credits.biomaterialProvider'] = 'Luis Costa, Centro Hospitalar Universitário Lisboa Norte, Hospital de Santa Maria, Lisbon, Portugal'
     
+    # credits on cohorts tab
+    bff.cohorts['info.origin'] = 'https://www.ncbi.nlm.nih.gov/bioproject/PRJNA689313'
+    bff.cohorts['info.credits.variantCallingAnalysis'] = "Daniel Sobral"
+    bff.cohorts['info.credits.studyAuthors'] = str(['Mahdi Golkaram', 'Michael L. Salmans', 'Shannon Kaplan', 'Raakhee Vijayaraghavan', 'Marta Martins', 'Nafeesa Khan', 'Cassandra Garbutt', 'Aaron Wise', 'Joyee Yao', 'Sandra Casimiro', 'Catarina Abreu', 'Daniela Macedo', 'Ana Lúcia Costa', 'Cecília Alvim', 'André Mansinho', 'Pedro Filipe', 'Pedro Marques da Costa', 'Afonso Fernandes', 'Paula Borralho', 'Cristina Ferreira', 'Fernando Aldeia', 'João Malaquias', 'Jim Godsey', 'Alex So', 'Traci Pawlowski', 'Luis Costa', 'Shile Zhang', 'Li Liu']).replace("'",'"')
+    bff.cohorts['info.credits.study'] = 'https://www.nature.com/articles/s41525-021-00177-w'
+    bff.cohorts['info.credits.biomaterialProvider'] = 'Luis Costa, Centro Hospitalar Universitário Lisboa Norte, Hospital de Santa Maria, Lisbon, Portugal'
+    
+    
+    
     bff.individuals['diseases_diseaseCode.id'] = 'ICD10CM:C18.9'
     bff.individuals['diseases_diseaseCode.label'] = 'stage II/III colorectal cancer'
-    bff.individuals['phenotypicFeatures_featureType.id'] = 'HP:0003003'
-    bff.individuals['phenotypicFeatures_featureType.label'] = 'Colon cancer'
+    
+    # TODO: FIND OUT HOW TO ENABLE THIS
+    #bff.individuals['phenotypicFeatures_featureType.id'] = 'HP:0003003'
+    #bff.individuals['phenotypicFeatures_featureType.label'] = 'Colon cancer'
 
 # call the function to add the lists of ids to the dataset table
 addListOfIdsToDataset() 
