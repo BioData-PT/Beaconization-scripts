@@ -196,9 +196,9 @@ def getOntologyCodeFromLabelLibSource(labelLibSource:str) -> tuple[str,str]:
 def getOntologyCodeFromLabelSex(labelSex:str) -> tuple[str,str]:
     label = labelSex.strip().lower()
     ontoDict = {}
-    ontoDict['male'] = ('NCIT:C20197',"Male")
-    ontoDict['female'] = ('NCIT:C16576', "Female")
-    ontoDict['not collected'] = ("NCIT:C17998", "Unknown")
+    ontoDict['male'] = ('NCIT:C20197',"male")
+    ontoDict['female'] = ('NCIT:C16576', "female")
+    ontoDict['not collected'] = ("NCIT:C17998", "unknown")
     ontoDict['unknown'] = ontoDict['not collected']
     
     if label not in ontoDict:
