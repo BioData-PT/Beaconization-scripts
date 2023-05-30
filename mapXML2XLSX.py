@@ -57,6 +57,7 @@ bff.datasets = datasets
 bff.individuals = individuals
 bff.runs = runs
 
+# read the whole xml file, parse it and fill the BFFSheets object
 for package in root:
     parsePackage(bff, package)
 
@@ -91,10 +92,31 @@ bff.cohorts['cohortSize'] = len(bff.individuals)
 ageAvailableCount = bff.individuals['phenotypicFeatures_onset.age.iso8601duration'].count()
 bff.cohorts['collectionEvents_eventAgeRange.availabilityCount'] = ageAvailableCount
 bff.cohorts['collectionEvents_eventAgeRange.availability'] = 'TRUE' if ageAvailableCount > 0 else 'FALSE'
+
 # same but for sex/gender
 genderAvailableCount = bff.individuals['sex.id'].count()
 bff.cohorts['collectionEvents_eventGenders.availabilityCount'] = genderAvailableCount
 bff.cohorts['collectionEvents_eventGenders.availability'] = 'TRUE' if genderAvailableCount > 0 else 'FALSE'
+
+# calculate sex inclusion and distribution
+sexDistribution = {}
+sexInclusion = []
+sexTypes = bff.individuals["sex.id"].unique()
+
+for sexType in sexTypes:
+    # sexTypeDf is a datafrane with all rows of individuals of a certain sex type
+    sexTypeDf = bff.individuals[bff.individuals['sex.id'] == sexType]
+    sexCount = len(sexTypeDf)
+    sexLabel = sexTypeDf["sex.label"].iloc[0]
+    
+    sexDistribution[sexLabel] = sexCount
+    sexInclusion.append({"id": sexType, "label": sexLabel})
+    
+# add sex inclusion and distribution to cohort table
+bff.cohorts['inclusionCriteria.genders'] = str(sexInclusion).replace("'", '"')
+bff.cohorts['collectionEvents_eventGenders.distribution'] = \
+    str([{"genders":str(sexDistribution)}]).replace("'", '"')
+
 
 # this function is called later so it doesn't drown the static values
 def addListOfIdsToDataset():
@@ -107,6 +129,7 @@ def addListOfIdsToDataset():
     
 
 # ---- Satic values (added manually for this dataset) ----
+
 if FILL_STATIC_VALUES:
     bff.analyses['aligner'] = 'BWA-MEM'
     bff.analyses['pipelineName'] = 'TSO500 and WES'
