@@ -115,7 +115,7 @@ for sexType in sexTypes:
 # add sex inclusion and distribution to cohort table
 bff.cohorts['inclusionCriteria.genders'] = str(sexInclusion).replace("'", '"')
 bff.cohorts['collectionEvents_eventGenders.distribution'] = \
-    str([{"genders":str(sexDistribution)}]).replace("'", '"')
+    str([{"genders":sexDistribution}]).replace("'", '"')
 
 
 # this function is called later so it doesn't drown the static values
@@ -136,8 +136,8 @@ if FILL_STATIC_VALUES:
     bff.analyses['pipelineRef'] = 'https://www.nature.com/articles/s41525-021-00177-w'
     bff.analyses['variantCaller'] = 'Strelka-2.9.10'
 
-    bff.biosamples['biosampleStatus.id'] = "EFO:0009655"
-    bff.biosamples['biosampleStatus.label'] = "abnormal sample"
+    # TODO probably correct this to be something like tumor biopsy and normal biopsy
+    # (depending on the sample type)
     bff.biosamples['sampleOriginType.id'] = "OBI:0001876"
     bff.biosamples['sampleOriginType.label'] = "cell culture"
 

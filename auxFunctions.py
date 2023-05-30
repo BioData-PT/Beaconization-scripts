@@ -45,6 +45,8 @@ def parsePackage(bffSheets:BFFSheets, package) -> int:
             sexId, sexLabel = getOntologyCodeFromLabelSex(sex)
         elif attribTag == "disease_stage":
             stage = attribVal
+        elif attribTag == "disease":
+            sampleDisease = attribVal
             
     runSet = package.find("RUN_SET")
     if len(runSet) != 1:
@@ -86,10 +88,20 @@ def parsePackage(bffSheets:BFFSheets, package) -> int:
     # add data to table
     bffSheets.analyses = pd.concat((bffSheets.analyses, analysesDf), ignore_index=True)
     
+    # check type of biosample
+    if sampleDisease == "normal":
+        biosampleStatusId = "EFO:0009654"
+        biosampleStatusLabel = "reference sample"
+    else:
+        biosampleStatusId = "EFO:0009655"
+        biosampleStatusLabel = "abnormal sample"
+        
     # create dataframe with new biosamples data
     biosamplesDf = pd.DataFrame({
       "id": [biosampleId],
       "individualId": [individualId],
+      "biosampleStatus.id": [biosampleStatusId],
+      "biosampleStatus.label": [biosampleStatusLabel],
       #"phenotypicFeatures_onset.age.iso8601duration": [getISO8601DurationFromAge(age)],
       #"measurements_observationMoment.age.iso8601duration": [getISO8601DurationFromAge(age)],
       "tumorGrade.label": [mapTumorGrade2Ontology(stage)[1]],
