@@ -1,3 +1,4 @@
+#!/bin/python3
 import datetime
 import pandas as pd
 import numpy as np
@@ -89,9 +90,9 @@ if ( len(bff.datasets) == 0 ):
 bff.cohorts['cohortSize'] = len(bff.individuals)
 
 # count number of non-NaN values on the age column in individuals table
-ageAvailableCount = bff.individuals['phenotypicFeatures_onset.age.iso8601duration'].count()
-bff.cohorts['collectionEvents_eventAgeRange.availabilityCount'] = ageAvailableCount
-bff.cohorts['collectionEvents_eventAgeRange.availability'] = 'TRUE' if ageAvailableCount > 0 else 'FALSE'
+#ageAvailableCount = bff.individuals['phenotypicFeatures_onset.age.iso8601duration'].count()
+#bff.cohorts['collectionEvents_eventAgeRange.availabilityCount'] = ageAvailableCount
+#bff.cohorts['collectionEvents_eventAgeRange.availability'] = 'TRUE' if ageAvailableCount > 0 else 'FALSE'
 
 # same but for sex/gender
 genderAvailableCount = bff.individuals['sex.id'].count()
@@ -147,30 +148,40 @@ if FILL_STATIC_VALUES:
     bff.cohorts['name'] = 'Stage II and III colorectal cancer'
 
     bff.cohorts['cohortType'] = 'study-defined'
-        
-    bff.datasets['dataUseConditions.duoDataUse'] = '[{"id": "DUO:0000019", \
-        "label": "publication required", \
-        "version": "2019-01-07"}, \
-            {\
-            "id": "DUO:0000042",\
-            "label": "general research use",\
-            "version": "2019-01-07"},\
-                {\
-                "id": "DUO:0000026",\
-                "label": "user specific restriction",\
-                "version": "2019-01-07"}, \
-                    {\
-                    "id": "DUO:0000028",\
-                    "label": "institution specific restriction",\
-                    "version": "2019-01-07"\
-                    }\
-    ]'.replace(' ', '') # remove spaces
+    
+    # find use conditions here: https://ega-archive.org/about/data_use_conditions
+    bff.datasets['dataUseConditions.duoDataUse'] = '[' \
+        '{' \
+            '"id": "DUO:0000004",' \
+            '"label": "no restriction",' \
+            '"version": "2019-01-07"' \
+        '},' \
+        '{' \
+            '"id": "DUO:0000042",' \
+            '"label": "general research use",' \
+            '"version": "2019-01-07"' \
+        '},' \
+        '{' \
+            '"id": "DUO:0000026",' \
+            '"label": "user specific restriction",' \
+            '"version": "2019-01-07"' \
+        '},' \
+        '{' \
+            '"id": "DUO:0000028",' \
+            '"label": "institution specific restriction",' \
+            '"version": "2019-01-07"' \
+        '}' \
+    ']'
     
 
     
     bff.datasets['description'] = 'Gene expression and whole exome sequencing of 114 stage II/III colorectal cancer patients with poor outcome'
     bff.datasets['externalUrl'] = 'https://www.nature.com/articles/s41525-021-00177-w'
-    bff.datasets['id'] = 'PRJNA689313'
+    
+    # changed id to match variations one
+    #bff.datasets['id'] = 'PRJNA689313'
+    bff.datasets['id'] = "nature_colorectal_cancer_test"
+    
     bff.datasets['name'] = 'Molecular subtyping of stage II/III colorectal cancer with poor outcome'
     
     # credits on datasets tab
@@ -193,11 +204,22 @@ if FILL_STATIC_VALUES:
     bff.individuals['diseases_diseaseCode.label'] = 'stage II/III colorectal cancer'
     
     # TODO: FIND OUT HOW TO ENABLE THIS
+    # see phenopackets page about this:
+    # https://phenopacket-schema.readthedocs.io/en/latest/phenotype.html#rstphenotypicfeature
     #bff.individuals['phenotypicFeatures_featureType.id'] = 'HP:0003003'
     #bff.individuals['phenotypicFeatures_featureType.label'] = 'Colon cancer'
 
 # call the function to add the lists of ids to the dataset table
-addListOfIdsToDataset() 
+# NOTE: This should be dropped in the future, instead use just datasetId on every table
+addListOfIdsToDataset()
+
+# add the dataset id to all the other table
+datasetId = bff.datasets['id'][0]
+bff.analyses['datasetId'] = datasetId
+bff.biosamples['datasetId'] = datasetId
+bff.cohorts['datasetId'] = datasetId
+bff.individuals['datasetId'] = datasetId
+bff.runs['datasetId'] = datasetId
 
 if True: # If True, export to an Excel file
     try:
