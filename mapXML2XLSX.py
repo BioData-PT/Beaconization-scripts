@@ -200,8 +200,10 @@ if FILL_STATIC_VALUES:
     
     
     
-    bff.individuals['diseases_diseaseCode.id'] = 'ICD10CM:C18.9'
-    bff.individuals['diseases_diseaseCode.label'] = 'stage II/III colorectal cancer'
+    #bff.individuals['diseases_diseaseCode.id'] = 'ICD10CM:C18.9'
+    bff.individuals['diseases_diseaseCode.id'] = 'DOID:9256'
+    #bff.individuals['diseases_diseaseCode.label'] = 'stage II/III colorectal cancer'
+    bff.individuals['diseases_diseaseCode.label'] = 'colorectal cancer'
     
     # TODO: FIND OUT HOW TO ENABLE THIS
     # see phenopackets page about this:
